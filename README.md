@@ -44,7 +44,7 @@ This will create `build/demo.out`.
 
 ## Architecture
 
-*TODO: Diagram*
+![Architecture diagram](https://github.com/shinhugh/world-engine/blob/master/architecture-diagram.png?raw=true)
 
 As object-oriented design dictates, each material object in our virtual space
 is represented by a runtime object in our program. Each runtime object holds
