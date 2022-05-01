@@ -12,6 +12,7 @@ EXE := \
 $(PATH_BUILD)/build.out
 OBJ := \
 $(PATH_BUILD)/config.o \
+$(PATH_BUILD)/driver.o \
 $(PATH_BUILD)/main.o \
 $(PATH_BUILD)/util.o
 
@@ -57,6 +58,7 @@ exe : $(EXE)
 
 $(PATH_BUILD)/build.out : \
 $(PATH_BUILD)/config.o \
+$(PATH_BUILD)/driver.o \
 $(PATH_BUILD)/main.o \
 $(PATH_BUILD)/util.o \
 | build
@@ -80,10 +82,18 @@ $(PATH_SRC)/config.h \
 	@echo "Building: config.o"
 	@g++ $< -c -o $@ -I$(PATH_SRC)
 
+$(PATH_BUILD)/driver.o : \
+$(PATH_SRC)/worldEngine/driver.cpp \
+$(PATH_SRC)/worldEngine/driver.h \
+| build
+	@echo "Building: driver.o"
+	@g++ $< -c -o $@ -I$(PATH_SRC)
+
 $(PATH_BUILD)/main.o : \
 $(PATH_SRC)/main.cpp \
 $(PATH_SRC)/config.h \
 $(PATH_SRC)/util/util.h \
+$(PATH_SRC)/worldEngine/driver.h \
 | build
 	@echo "Building: main.o"
 	@g++ $< -c -o $@ -I$(PATH_SRC)
