@@ -84,6 +84,7 @@ $(PATH_SRC)/config.h \
 
 $(PATH_BUILD)/driver.o : \
 $(PATH_SRC)/worldEngine/driver.cpp \
+$(PATH_SRC)/util/util.h \
 $(PATH_SRC)/worldEngine/driver.h \
 | build
 	@echo "Building: driver.o"

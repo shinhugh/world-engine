@@ -17,7 +17,9 @@ namespace WorldEngine {
     Driver(const Driver &);
     ~Driver();
     Driver & operator=(const Driver &);
-    // TODO
+    bool isPlaying();
+    void play();
+    void pause();
 
   };
 
