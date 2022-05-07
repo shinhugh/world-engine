@@ -14,6 +14,8 @@ OBJ := \
 $(PATH_BUILD)/config.o \
 $(PATH_BUILD)/driver.o \
 $(PATH_BUILD)/main.o \
+$(PATH_BUILD)/point.o \
+$(PATH_BUILD)/triangle.o \
 $(PATH_BUILD)/util.o
 
 # --------------------------------------------------
@@ -60,6 +62,8 @@ $(PATH_BUILD)/build.out : \
 $(PATH_BUILD)/config.o \
 $(PATH_BUILD)/driver.o \
 $(PATH_BUILD)/main.o \
+$(PATH_BUILD)/point.o \
+$(PATH_BUILD)/triangle.o \
 $(PATH_BUILD)/util.o \
 | build
 	@echo "Building: build.out"
@@ -95,8 +99,25 @@ $(PATH_SRC)/main.cpp \
 $(PATH_SRC)/config.h \
 $(PATH_SRC)/util/util.h \
 $(PATH_SRC)/worldEngine/driver.h \
+$(PATH_SRC)/worldEngine/point.h \
+$(PATH_SRC)/worldEngine/triangle.h \
 | build
 	@echo "Building: main.o"
+	@g++ $< -c -o $@ -I$(PATH_SRC)
+
+$(PATH_BUILD)/point.o : \
+$(PATH_SRC)/worldEngine/point.cpp \
+$(PATH_SRC)/worldEngine/point.h \
+| build
+	@echo "Building: point.o"
+	@g++ $< -c -o $@ -I$(PATH_SRC)
+
+$(PATH_BUILD)/triangle.o : \
+$(PATH_SRC)/worldEngine/triangle.cpp \
+$(PATH_SRC)/worldEngine/point.h \
+$(PATH_SRC)/worldEngine/triangle.h \
+| build
+	@echo "Building: triangle.o"
 	@g++ $< -c -o $@ -I$(PATH_SRC)
 
 $(PATH_BUILD)/util.o : \
