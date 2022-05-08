@@ -9,7 +9,7 @@ PATH_BUILD := $(PATH_ROOT)/build
 PATH_SRC := $(PATH_ROOT)/src
 
 EXE := \
-$(PATH_BUILD)/build.out
+$(PATH_BUILD)/demo.out
 OBJ := \
 $(PATH_BUILD)/config.o \
 $(PATH_BUILD)/driver.o \
@@ -25,13 +25,13 @@ $(PATH_BUILD)/world.o
 
 # Unconditional targets
 
-.PHONY : default clean exe obj
+.PHONY : default clean exe obj demo
 
 # --------------------------------------------------
 
 # Default target
 
-default : $(PATH_BUILD)/build.out
+default : demo
 
 # --------------------------------------------------
 
@@ -43,14 +43,6 @@ clean :
 
 # --------------------------------------------------
 
-# Create build directory
-
-build :
-	@echo "Creating build directory"
-	@mkdir $(PATH_BUILD) -p
-
-# --------------------------------------------------
-
 # Build all executable files
 
 exe : $(EXE)
@@ -59,9 +51,29 @@ exe : $(EXE)
 
 # --------------------------------------------------
 
+# Build all object files
+
+obj : $(OBJ)
+
+# --------------------------------------------------
+
+# Build demo executable
+
+demo : $(PATH_BUILD)/demo.out
+
+# --------------------------------------------------
+
+# Create build directory
+
+build :
+	@echo "Creating build directory"
+	@mkdir $(PATH_BUILD) -p
+
+# --------------------------------------------------
+
 # Build executable files
 
-$(PATH_BUILD)/build.out : \
+$(PATH_BUILD)/demo.out : \
 $(PATH_BUILD)/config.o \
 $(PATH_BUILD)/driver.o \
 $(PATH_BUILD)/main.o \
@@ -72,14 +84,8 @@ $(PATH_BUILD)/triangleInternal.o \
 $(PATH_BUILD)/util.o \
 $(PATH_BUILD)/world.o \
 | build
-	@echo "Building: build.out"
+	@echo "Building: demo.out"
 	@g++ $^ -o $@ -lGL -lGLU -lglut
-
-# --------------------------------------------------
-
-# Build all object files
-
-obj : $(OBJ)
 
 # --------------------------------------------------
 
