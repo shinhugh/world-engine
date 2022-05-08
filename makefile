@@ -25,7 +25,7 @@ $(PATH_BUILD)/world.o
 
 # Unconditional targets
 
-.PHONY : default clean exe obj demo
+.PHONY : default clean obj exe lib demo
 
 # --------------------------------------------------
 
@@ -43,7 +43,13 @@ clean :
 
 # --------------------------------------------------
 
-# Build all executable files
+# Build all object files
+
+obj : $(OBJ)
+
+# --------------------------------------------------
+
+# Build all executable files and remove object files
 
 exe : $(EXE)
 	@echo "Removing object files"
@@ -51,9 +57,10 @@ exe : $(EXE)
 
 # --------------------------------------------------
 
-# Build all object files
+# Build static library
 
-obj : $(OBJ)
+lib :
+	@echo "This target has not been set up yet."
 
 # --------------------------------------------------
 
