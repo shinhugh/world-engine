@@ -1,4 +1,5 @@
+- Implement copy constructor and = operator for WorldImpl
 - Pass in elapsed time since last update (respecting pause time) (driver.cpp)
-- Thread-safety for World
 - Implement updating of Points' positions by using velocities
-- Look into changing from *impl approach to polymorphism approach
+- Thread-safety for World
+- Have graphics thread efficiently read all triangles and render image
