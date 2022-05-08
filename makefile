@@ -8,8 +8,6 @@ PATH_ROOT := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 PATH_BUILD := $(PATH_ROOT)/build
 PATH_SRC := $(PATH_ROOT)/src
 
-EXE := \
-$(PATH_BUILD)/demo.out
 OBJ := \
 $(PATH_BUILD)/config.o \
 $(PATH_BUILD)/driver.o \
@@ -20,18 +18,22 @@ $(PATH_BUILD)/triangle.o \
 $(PATH_BUILD)/triangleInternal.o \
 $(PATH_BUILD)/util.o \
 $(PATH_BUILD)/world.o
+LIB := \
+$(PATH_BUILD)/libworldEngine.a
+EXE := \
+$(PATH_BUILD)/demo.out
 
 # --------------------------------------------------
 
 # Unconditional targets
 
-.PHONY : default clean obj exe lib demo
+.PHONY : default clean obj lib demo
 
 # --------------------------------------------------
 
 # Default target
 
-default : demo
+default : lib
 
 # --------------------------------------------------
 
@@ -39,7 +41,7 @@ default : demo
 
 clean :
 	@echo "Removing executable and object files"
-	@rm $(EXE) $(OBJ) -f
+	@rm $(OBJ) $(LIB) $(EXE) -f
 
 # --------------------------------------------------
 
@@ -49,24 +51,19 @@ obj : $(OBJ)
 
 # --------------------------------------------------
 
-# Build all executable files and remove object files
+# Build static library
 
-exe : $(EXE)
+lib : $(PATH_BUILD)/libworldEngine.a
 	@echo "Removing object files"
 	@rm $(OBJ) -f
 
 # --------------------------------------------------
 
-# Build static library
-
-lib :
-	@echo "This target has not been set up yet."
-
-# --------------------------------------------------
-
-# Build demo executable
+# Build demo executable file
 
 demo : $(PATH_BUILD)/demo.out
+	@echo "Removing object files and libraries"
+	@rm $(OBJ) $(LIB) -f
 
 # --------------------------------------------------
 
@@ -75,24 +72,6 @@ demo : $(PATH_BUILD)/demo.out
 build :
 	@echo "Creating build directory"
 	@mkdir $(PATH_BUILD) -p
-
-# --------------------------------------------------
-
-# Build executable files
-
-$(PATH_BUILD)/demo.out : \
-$(PATH_BUILD)/config.o \
-$(PATH_BUILD)/driver.o \
-$(PATH_BUILD)/main.o \
-$(PATH_BUILD)/point.o \
-$(PATH_BUILD)/pointInternal.o \
-$(PATH_BUILD)/triangle.o \
-$(PATH_BUILD)/triangleInternal.o \
-$(PATH_BUILD)/util.o \
-$(PATH_BUILD)/world.o \
-| build
-	@echo "Building: demo.out"
-	@g++ $^ -o $@ -lGL -lGLU -lglut
 
 # --------------------------------------------------
 
@@ -176,3 +155,31 @@ $(PATH_SRC)/worldEngine/world.h \
 | build
 	@echo "Building: world.o"
 	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
+
+# --------------------------------------------------
+
+# Build static libraries
+
+$(PATH_BUILD)/libworldEngine.a : \
+$(PATH_BUILD)/driver.o \
+$(PATH_BUILD)/point.o \
+$(PATH_BUILD)/pointInternal.o \
+$(PATH_BUILD)/triangle.o \
+$(PATH_BUILD)/triangleInternal.o \
+$(PATH_BUILD)/util.o \
+$(PATH_BUILD)/world.o \
+| build
+	@echo "Building: libworldEngine.a"
+	@ar rcs $@ $^
+
+# --------------------------------------------------
+
+# Build executable files
+
+$(PATH_BUILD)/demo.out : \
+$(PATH_BUILD)/config.o \
+$(PATH_BUILD)/libworldEngine.a \
+$(PATH_BUILD)/main.o \
+| build
+	@echo "Building: demo.out"
+	@g++ $^ -o $@ -L$(PATH_BUILD) -lworldEngine -lGL -lGLU -lglut
