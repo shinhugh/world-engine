@@ -1,5 +1,4 @@
 - Pass in elapsed time since last update (respecting pause time) (driver.cpp)
 - Thread-safety for World
 - Implement updating of Points' positions by using velocities
-- Replace all C-style casts to static_cast<>()
-- Throw exception instead of returning false for undefined behaviors (world.cpp)
+- Look into changing from *impl approach to polymorphism approach

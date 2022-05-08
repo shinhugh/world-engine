@@ -40,7 +40,8 @@ namespace WorldEngine {
     ~WorldImpl() { }
 
     WorldImpl & operator=(const WorldImpl &src) {
-      // TODO: Reset
+      points.clear();
+      triangles.clear();
       // TODO: Copy points
       // TODO: Create mapping of Points and use it to copy Triangles
       return *this;
@@ -61,14 +62,8 @@ namespace WorldEngine {
     }
 
     bool destroyPoint(Point &point) {
-      if (!dynamic_cast<PointInternal *>(&point)) {
-        return false;
-      }
-      PointInternal &pointInternal = static_cast<PointInternal &>(point);
-      if (!points.count(pointInternal.id)) {
-        return false;
-      }
-      if (pointInternal.referenceCount) {
+      PointInternal &pointInternal = dynamic_cast<PointInternal &>(point);
+      if (!points.count(pointInternal.id) || pointInternal.referenceCount) {
         return false;
       }
       points.erase(pointInternal.id);
@@ -76,18 +71,9 @@ namespace WorldEngine {
     }
 
     Triangle & createTriangle(Point &pointA, Point &pointB, Point &pointC) {
-      if (!dynamic_cast<PointInternal *>(&pointA)
-      || !dynamic_cast<PointInternal *>(&pointB)
-      || !dynamic_cast<PointInternal *>(&pointC)) {
-        // TODO: Indicate failure somehow
-      }
-      PointInternal &pointInternalA = static_cast<PointInternal &>(pointA);
-      PointInternal &pointInternalB = static_cast<PointInternal &>(pointB);
-      PointInternal &pointInternalC = static_cast<PointInternal &>(pointC);
-      if (!points.count(pointInternalA.id) || !points.count(pointInternalB.id)
-      || !points.count(pointInternalC.id)) {
-        // TODO: Indicate failure somehow
-      }
+      PointInternal &pointInternalA = dynamic_cast<PointInternal &>(pointA),
+      &pointInternalB = dynamic_cast<PointInternal &>(pointB),
+      &pointInternalC = dynamic_cast<PointInternal &>(pointC);
       pointInternalA.referenceCount++;
       pointInternalB.referenceCount++;
       pointInternalC.referenceCount++;
@@ -97,17 +83,14 @@ namespace WorldEngine {
     }
 
     bool destroyTriangle(Triangle &triangle) {
-      if (!dynamic_cast<TriangleInternal *>(&triangle)) {
-        return false;
-      }
-      TriangleInternal &triangleInternal = static_cast<TriangleInternal &>
+      TriangleInternal &triangleInternal = dynamic_cast<TriangleInternal &>
       (triangle);
       if (!triangles.count(triangleInternal.id)) {
         return false;
       }
-      static_cast<PointInternal &>(triangle.pointA).referenceCount--;
-      static_cast<PointInternal &>(triangle.pointB).referenceCount--;
-      static_cast<PointInternal &>(triangle.pointC).referenceCount--;
+      dynamic_cast<PointInternal &>(triangle.pointA).referenceCount--;
+      dynamic_cast<PointInternal &>(triangle.pointB).referenceCount--;
+      dynamic_cast<PointInternal &>(triangle.pointC).referenceCount--;
       triangles.erase(triangleInternal.id);
       return true;
     }
