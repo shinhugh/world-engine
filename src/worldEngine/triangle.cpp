@@ -5,8 +5,9 @@
 
 namespace WorldEngine {
 
-  Triangle::Triangle(unsigned long long int id, Point &pointA, Point &pointB,
-  Point &pointC) :
-  id(id), pointA(pointA), pointB(pointB), pointC(pointC) { }
+  Triangle::Triangle(Point &pointA, Point &pointB, Point &pointC) :
+  pointA(pointA), pointB(pointB), pointC(pointC) { }
+
+  Triangle::~Triangle() { }
 
 }

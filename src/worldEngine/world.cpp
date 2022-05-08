@@ -1,23 +1,24 @@
 // World state manager implementation
 
 #include <map>
+#include <typeinfo>
 #include <util/util.h>
 #include <worldEngine/point.h>
+#include <worldEngine/pointInternal.h>
 #include <worldEngine/triangle.h>
+#include <worldEngine/triangleInternal.h>
 #include <worldEngine/world.h>
 
 namespace WorldEngine {
 
   // TODO: Thread-safety
-  // TODO: Only allow creating Triangles from registered Points
-  // TODO: Only allow destroying registered Points and Triangles
 
   class WorldImpl {
 
   private:
 
-    std::map<unsigned long long int, Point> points;
-    std::map<unsigned long long int, Triangle> triangles;
+    std::map<unsigned long long int, PointInternal> points;
+    std::map<unsigned long long int, TriangleInternal> triangles;
 
     unsigned long long int generateId() {
       static unsigned long long int nextId = 0;
@@ -47,39 +48,67 @@ namespace WorldEngine {
 
     Point & createPoint() {
       unsigned long long int id = generateId();
-      points.insert({id, Point(id)});
+      points.insert({id, PointInternal(id)});
       return points.at(id);
     }
 
     Point & createPoint(double posX, double posY, double posZ, double velX,
     double velY, double velZ) {
       unsigned long long int id = generateId();
-      points.insert({id, Point(id, posX, posY, posZ, velX, velY, velZ)});
+      points.insert({id, PointInternal(id, posX, posY, posZ, velX, velY,
+      velZ)});
       return points.at(id);
     }
 
     bool destroyPoint(Point &point) {
-      if (point.referenceCount) {
+      if (!dynamic_cast<PointInternal *>(&point)) {
         return false;
       }
-      points.erase(point.id);
+      PointInternal &pointInternal = static_cast<PointInternal &>(point);
+      if (!points.count(pointInternal.id)) {
+        return false;
+      }
+      if (pointInternal.referenceCount) {
+        return false;
+      }
+      points.erase(pointInternal.id);
       return true;
     }
 
     Triangle & createTriangle(Point &pointA, Point &pointB, Point &pointC) {
-      pointA.referenceCount++;
-      pointB.referenceCount++;
-      pointC.referenceCount++;
+      if (!dynamic_cast<PointInternal *>(&pointA)
+      || !dynamic_cast<PointInternal *>(&pointB)
+      || !dynamic_cast<PointInternal *>(&pointC)) {
+        // TODO: Indicate failure somehow
+      }
+      PointInternal &pointInternalA = static_cast<PointInternal &>(pointA);
+      PointInternal &pointInternalB = static_cast<PointInternal &>(pointB);
+      PointInternal &pointInternalC = static_cast<PointInternal &>(pointC);
+      if (!points.count(pointInternalA.id) || !points.count(pointInternalB.id)
+      || !points.count(pointInternalC.id)) {
+        // TODO: Indicate failure somehow
+      }
+      pointInternalA.referenceCount++;
+      pointInternalB.referenceCount++;
+      pointInternalC.referenceCount++;
       unsigned long long int id = generateId();
-      triangles.insert({id, Triangle(id, pointA, pointB, pointC)});
+      triangles.insert({id, TriangleInternal(id, pointA, pointB, pointC)});
       return triangles.at(id);
     }
 
     bool destroyTriangle(Triangle &triangle) {
-      triangle.pointA.referenceCount--;
-      triangle.pointB.referenceCount--;
-      triangle.pointC.referenceCount--;
-      triangles.erase(triangle.id);
+      if (!dynamic_cast<TriangleInternal *>(&triangle)) {
+        return false;
+      }
+      TriangleInternal &triangleInternal = static_cast<TriangleInternal &>
+      (triangle);
+      if (!triangles.count(triangleInternal.id)) {
+        return false;
+      }
+      static_cast<PointInternal &>(triangle.pointA).referenceCount--;
+      static_cast<PointInternal &>(triangle.pointB).referenceCount--;
+      static_cast<PointInternal &>(triangle.pointC).referenceCount--;
+      triangles.erase(triangleInternal.id);
       return true;
     }
 

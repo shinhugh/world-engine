@@ -7,12 +7,16 @@
 
 namespace WorldEngine {
 
-  struct Triangle {
+  class Triangle {
 
-    const unsigned long long int id; // TODO: Only make visible to World
+  protected:
+
+    Triangle(Point &, Point &, Point &);
+    virtual ~Triangle();
+
+  public:
+
     Point &pointA, &pointB, &pointC;
-
-    Triangle(unsigned long long int, Point &, Point &, Point &);
 
   };
 

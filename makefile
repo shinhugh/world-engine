@@ -15,7 +15,9 @@ $(PATH_BUILD)/config.o \
 $(PATH_BUILD)/driver.o \
 $(PATH_BUILD)/main.o \
 $(PATH_BUILD)/point.o \
+$(PATH_BUILD)/pointInternal.o \
 $(PATH_BUILD)/triangle.o \
+$(PATH_BUILD)/triangleInternal.o \
 $(PATH_BUILD)/util.o \
 $(PATH_BUILD)/world.o
 
@@ -64,7 +66,9 @@ $(PATH_BUILD)/config.o \
 $(PATH_BUILD)/driver.o \
 $(PATH_BUILD)/main.o \
 $(PATH_BUILD)/point.o \
+$(PATH_BUILD)/pointInternal.o \
 $(PATH_BUILD)/triangle.o \
+$(PATH_BUILD)/triangleInternal.o \
 $(PATH_BUILD)/util.o \
 $(PATH_BUILD)/world.o \
 | build
@@ -116,12 +120,29 @@ $(PATH_SRC)/worldEngine/point.h \
 	@echo "Building: point.o"
 	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
 
+$(PATH_BUILD)/pointInternal.o : \
+$(PATH_SRC)/worldEngine/pointInternal.cpp \
+$(PATH_SRC)/worldEngine/point.h \
+$(PATH_SRC)/worldEngine/pointInternal.h \
+| build
+	@echo "Building: pointInternal.o"
+	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
+
 $(PATH_BUILD)/triangle.o : \
 $(PATH_SRC)/worldEngine/triangle.cpp \
 $(PATH_SRC)/worldEngine/point.h \
 $(PATH_SRC)/worldEngine/triangle.h \
 | build
 	@echo "Building: triangle.o"
+	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
+
+$(PATH_BUILD)/triangleInternal.o : \
+$(PATH_SRC)/worldEngine/triangleInternal.cpp \
+$(PATH_SRC)/worldEngine/point.h \
+$(PATH_SRC)/worldEngine/triangle.h \
+$(PATH_SRC)/worldEngine/triangleInternal.h \
+| build
+	@echo "Building: triangleInternal.o"
 	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
 
 $(PATH_BUILD)/util.o : \
@@ -135,7 +156,9 @@ $(PATH_BUILD)/world.o : \
 $(PATH_SRC)/worldEngine/world.cpp \
 $(PATH_SRC)/util/util.h \
 $(PATH_SRC)/worldEngine/point.h \
+$(PATH_SRC)/worldEngine/pointInternal.h \
 $(PATH_SRC)/worldEngine/triangle.h \
+$(PATH_SRC)/worldEngine/triangleInternal.h \
 $(PATH_SRC)/worldEngine/world.h \
 | build
 	@echo "Building: world.o"
