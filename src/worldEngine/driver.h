@@ -3,6 +3,8 @@
 #ifndef DRIVER_H
 #define DRIVER_H
 
+#include <worldEngine/world.h>
+
 namespace WorldEngine {
 
   class Driver {
@@ -13,7 +15,7 @@ namespace WorldEngine {
 
   public:
 
-    Driver();
+    Driver(World &);
     Driver(const Driver &);
     ~Driver();
     Driver & operator=(const Driver &);

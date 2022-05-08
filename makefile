@@ -16,7 +16,8 @@ $(PATH_BUILD)/driver.o \
 $(PATH_BUILD)/main.o \
 $(PATH_BUILD)/point.o \
 $(PATH_BUILD)/triangle.o \
-$(PATH_BUILD)/util.o
+$(PATH_BUILD)/util.o \
+$(PATH_BUILD)/world.o
 
 # --------------------------------------------------
 
@@ -65,9 +66,10 @@ $(PATH_BUILD)/main.o \
 $(PATH_BUILD)/point.o \
 $(PATH_BUILD)/triangle.o \
 $(PATH_BUILD)/util.o \
+$(PATH_BUILD)/world.o \
 | build
 	@echo "Building: build.out"
-	@g++ $^ -o $@
+	@g++ $^ -o $@ -lGL -lGLU -lglut
 
 # --------------------------------------------------
 
@@ -84,15 +86,16 @@ $(PATH_SRC)/config.cpp \
 $(PATH_SRC)/config.h \
 | build
 	@echo "Building: config.o"
-	@g++ $< -c -o $@ -I$(PATH_SRC)
+	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
 
 $(PATH_BUILD)/driver.o : \
 $(PATH_SRC)/worldEngine/driver.cpp \
 $(PATH_SRC)/util/util.h \
 $(PATH_SRC)/worldEngine/driver.h \
+$(PATH_SRC)/worldEngine/world.h \
 | build
 	@echo "Building: driver.o"
-	@g++ $< -c -o $@ -I$(PATH_SRC)
+	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
 
 $(PATH_BUILD)/main.o : \
 $(PATH_SRC)/main.cpp \
@@ -101,16 +104,17 @@ $(PATH_SRC)/util/util.h \
 $(PATH_SRC)/worldEngine/driver.h \
 $(PATH_SRC)/worldEngine/point.h \
 $(PATH_SRC)/worldEngine/triangle.h \
+$(PATH_SRC)/worldEngine/world.h \
 | build
 	@echo "Building: main.o"
-	@g++ $< -c -o $@ -I$(PATH_SRC)
+	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
 
 $(PATH_BUILD)/point.o : \
 $(PATH_SRC)/worldEngine/point.cpp \
 $(PATH_SRC)/worldEngine/point.h \
 | build
 	@echo "Building: point.o"
-	@g++ $< -c -o $@ -I$(PATH_SRC)
+	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
 
 $(PATH_BUILD)/triangle.o : \
 $(PATH_SRC)/worldEngine/triangle.cpp \
@@ -118,11 +122,21 @@ $(PATH_SRC)/worldEngine/point.h \
 $(PATH_SRC)/worldEngine/triangle.h \
 | build
 	@echo "Building: triangle.o"
-	@g++ $< -c -o $@ -I$(PATH_SRC)
+	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
 
 $(PATH_BUILD)/util.o : \
 $(PATH_SRC)/util/util.cpp \
 $(PATH_SRC)/util/util.h \
 | build
 	@echo "Building: util.o"
-	@g++ $< -c -o $@ -I$(PATH_SRC)
+	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)
+
+$(PATH_BUILD)/world.o : \
+$(PATH_SRC)/worldEngine/world.cpp \
+$(PATH_SRC)/util/util.h \
+$(PATH_SRC)/worldEngine/point.h \
+$(PATH_SRC)/worldEngine/triangle.h \
+$(PATH_SRC)/worldEngine/world.h \
+| build
+	@echo "Building: world.o"
+	@g++ $< -c -Wall -Wextra -o $@ -I$(PATH_SRC)

@@ -9,9 +9,10 @@ namespace WorldEngine {
 
   struct Triangle {
 
+    const unsigned long long int id; // TODO: Only make visible to World
     Point &pointA, &pointB, &pointC;
 
-    Triangle(Point &, Point &, Point &);
+    Triangle(unsigned long long int, Point &, Point &, Point &);
 
   };
 

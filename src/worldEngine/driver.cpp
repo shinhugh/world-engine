@@ -4,6 +4,7 @@
 #include <thread>
 #include <util/util.h>
 #include <worldEngine/driver.h>
+#include <worldEngine/world.h>
 
 namespace WorldEngine {
 
@@ -14,19 +15,20 @@ namespace WorldEngine {
     std::thread *thread = 0;
     bool alive = false;
     bool playing = false;
-    // TODO
+    World *world;
 
     static void run(DriverImpl *driverImpl) {
-      Util::log("Thread routine starting");
+      Util::log("Driver thread routine starting");
       while (driverImpl->alive) {
         if (driverImpl->playing) {
-          // TODO
+          // TODO: Pass in elapsed time, respecting pause time
+          driverImpl->world->update();
         }
         else {
           std::this_thread::sleep_for(std::chrono::milliseconds(2));
         }
       }
-      Util::log("Thread routine finishing");
+      Util::log("Driver thread routine finishing");
     }
 
     void reset() {
@@ -39,6 +41,7 @@ namespace WorldEngine {
     }
 
     void copy(const DriverImpl &src) {
+      world = src.world;
       if (src.alive) {
         alive = true;
         thread = new std::thread(run, this);
@@ -50,7 +53,9 @@ namespace WorldEngine {
 
   public:
 
-    DriverImpl() { }
+    DriverImpl(World &world) :
+    world(&world) { }
+
     DriverImpl(const DriverImpl &src) {
       copy(src);
     }
@@ -85,8 +90,8 @@ namespace WorldEngine {
 
   // ----------------------------------------
 
-  Driver::Driver() :
-  impl(new DriverImpl()) { }
+  Driver::Driver(World &world) :
+  impl(new DriverImpl(world)) { }
 
   Driver::Driver(const Driver &src) :
   impl(new DriverImpl(*(DriverImpl *)src.impl)) { }

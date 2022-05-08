@@ -1,0 +1,5 @@
+- Pass in elapsed time since last update (respecting pause time) (driver.cpp)
+- Thread-safety for World
+- Only allow World to deal with registered Points and Triangles
+- Implement updating of Points' positions by using velocities
+- Make id and referenceCount visible only to World (point.h, triangle.h)
