@@ -1,7 +1,6 @@
 // World state manager implementation
 
 #include <map>
-#include <typeinfo>
 #include <internal/pointInternal.h>
 #include <internal/triangleInternal.h>
 #include <internal/utilInternal.h>
