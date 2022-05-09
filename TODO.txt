@@ -1,4 +1,4 @@
-- Implement copy constructor and = operator for WorldImpl
+- Have World expose Points and Triangles somehow
 - Pass in elapsed time since last update (respecting pause time) (driver.cpp)
 - Implement updating of Points' positions by using velocities
 - Thread-safety for World

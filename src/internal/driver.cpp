@@ -18,7 +18,7 @@ namespace WorldEngine {
     World *world;
 
     static void run(DriverImpl *driverImpl) {
-      Util::log("Driver thread routine starting");
+      Util::log("Driver thread starting");
       while (driverImpl->alive) {
         if (driverImpl->playing) {
           // TODO: Pass in elapsed time, respecting pause time
@@ -28,7 +28,7 @@ namespace WorldEngine {
           std::this_thread::sleep_for(std::chrono::milliseconds(2));
         }
       }
-      Util::log("Driver thread routine finishing");
+      Util::log("Driver thread finishing");
     }
 
     void reset() {
@@ -75,6 +75,7 @@ namespace WorldEngine {
     }
 
     void play() {
+      Util::log("Driver thread playing");
       alive = true;
       playing = true;
       if (!thread) {
@@ -83,6 +84,7 @@ namespace WorldEngine {
     }
 
     void pause() {
+      Util::log("Driver thread pausing");
       playing = false;
     }
 

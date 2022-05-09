@@ -11,6 +11,7 @@
 
 namespace WorldEngine {
 
+  // TODO: Expose Points and Triangles without direct access to vectors
   // TODO: Thread-safety
 
   class WorldImpl {
@@ -28,22 +29,37 @@ namespace WorldEngine {
       return nextId++;
     }
 
+    void copy(const WorldImpl &src) {
+      std::map<const Point *, PointInternal *> pointMap;
+      for (std::map<unsigned long long int, PointInternal>::const_iterator it
+      = src.points.begin(); it != src.points.end(); it++) {
+        points.insert({it->first, it->second});
+        pointMap.insert({&it->second, &points.at(it->first)});
+      }
+      for (std::map<unsigned long long int, TriangleInternal>::const_iterator it
+      = src.triangles.begin(); it != src.triangles.end(); it++) {
+        PointInternal &pointA = *pointMap.at(&it->second.pointA),
+        &pointB = *pointMap.at(&it->second.pointB),
+        &pointC = *pointMap.at(&it->second.pointC);
+        triangles.insert({it->second.id,
+        TriangleInternal(it->second.id, pointA, pointB, pointC)});
+      }
+    }
+
   public:
 
     WorldImpl() { }
 
     WorldImpl(const WorldImpl &src) {
-      // TODO: Copy points
-      // TODO: Create mapping of Points and use it to copy Triangles
+      copy(src);
     }
 
     ~WorldImpl() { }
 
     WorldImpl & operator=(const WorldImpl &src) {
-      points.clear();
       triangles.clear();
-      // TODO: Copy points
-      // TODO: Create mapping of Points and use it to copy Triangles
+      points.clear();
+      copy(src);
       return *this;
     }
 
