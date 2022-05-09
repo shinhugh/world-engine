@@ -30,7 +30,7 @@ namespace WorldEngine {
     }
 
     void copy(const WorldImpl &src) {
-      std::map<const Point *, PointInternal *> pointMap;
+      std::map<const Point *, Point *> pointMap;
       for (std::map<unsigned long long int, PointInternal>::const_iterator it
       = src.points.begin(); it != src.points.end(); it++) {
         points.insert({it->first, it->second});
@@ -38,7 +38,7 @@ namespace WorldEngine {
       }
       for (std::map<unsigned long long int, TriangleInternal>::const_iterator it
       = src.triangles.begin(); it != src.triangles.end(); it++) {
-        PointInternal &pointA = *pointMap.at(&it->second.pointA),
+        Point &pointA = *pointMap.at(&it->second.pointA),
         &pointB = *pointMap.at(&it->second.pointB),
         &pointC = *pointMap.at(&it->second.pointC);
         triangles.insert({it->second.id,
