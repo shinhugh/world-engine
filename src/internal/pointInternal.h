@@ -3,7 +3,7 @@
 #ifndef POINT_INTERNAL_H
 #define POINT_INTERNAL_H
 
-#include <worldEngine/point.h>
+#include <public/point.h>
 
 namespace WorldEngine {
 

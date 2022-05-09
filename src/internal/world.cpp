@@ -2,12 +2,12 @@
 
 #include <map>
 #include <typeinfo>
-#include <util/util.h>
-#include <worldEngine/point.h>
-#include <worldEngine/pointInternal.h>
-#include <worldEngine/triangle.h>
-#include <worldEngine/triangleInternal.h>
-#include <worldEngine/world.h>
+#include <internal/pointInternal.h>
+#include <internal/triangleInternal.h>
+#include <internal/utilInternal.h>
+#include <public/point.h>
+#include <public/triangle.h>
+#include <public/world.h>
 
 namespace WorldEngine {
 

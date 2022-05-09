@@ -1,7 +1,7 @@
 // Triangle implementation
 
-#include <worldEngine/point.h>
-#include <worldEngine/triangle.h>
+#include <public/point.h>
+#include <public/triangle.h>
 
 namespace WorldEngine {
 

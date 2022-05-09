@@ -3,8 +3,8 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include <worldEngine/point.h>
-#include <worldEngine/triangle.h>
+#include <public/point.h>
+#include <public/triangle.h>
 
 namespace WorldEngine {
 

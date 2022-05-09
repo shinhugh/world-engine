@@ -1,7 +1,7 @@
 // Point internal implementation
 
-#include <worldEngine/point.h>
-#include <worldEngine/pointInternal.h>
+#include <internal/pointInternal.h>
+#include <public/point.h>
 
 namespace WorldEngine {
 

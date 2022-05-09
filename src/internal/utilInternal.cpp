@@ -3,7 +3,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <util/util.h>
+#include <internal/utilInternal.h>
+#include <public/util.h>
 
 namespace Util {
 

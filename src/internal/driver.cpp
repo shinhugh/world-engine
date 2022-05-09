@@ -2,9 +2,9 @@
 
 #include <chrono>
 #include <thread>
-#include <util/util.h>
-#include <worldEngine/driver.h>
-#include <worldEngine/world.h>
+#include <internal/utilInternal.h>
+#include <public/driver.h>
+#include <public/world.h>
 
 namespace WorldEngine {
 

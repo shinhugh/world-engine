@@ -1,6 +1,6 @@
 // Point implementation
 
-#include <worldEngine/point.h>
+#include <public/point.h>
 
 namespace WorldEngine {
 

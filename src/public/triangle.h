@@ -3,7 +3,7 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include <worldEngine/point.h>
+#include <public/point.h>
 
 namespace WorldEngine {
 

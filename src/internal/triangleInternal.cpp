@@ -1,8 +1,8 @@
 // Triangle internal implementation
 
-#include <worldEngine/point.h>
-#include <worldEngine/triangle.h>
-#include <worldEngine/triangleInternal.h>
+#include <internal/triangleInternal.h>
+#include <public/point.h>
+#include <public/triangle.h>
 
 namespace WorldEngine {
 
